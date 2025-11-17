@@ -2,5 +2,5 @@
     margin: 0;
     padding: 0;
     border: none;
-    box-sizing: border-box;
+    box-sizing: border-box; /* anulamos todos los estilos predeterminados */
 }

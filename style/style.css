@@ -1,5 +1,7 @@
-@import url(./reset.css);
+@import url(./reset.css); 
 @import url(./header.css);
 @import url(./footer.css);
 @import url(./main.css);
 @import url(./global.css);
+
+/* importamos todas las hojas de estilo */

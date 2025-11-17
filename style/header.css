@@ -1,48 +1,48 @@
 header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* alineamos todos los elementos en el centro */
     padding: 1rem 2rem;
-    position: fixed;
+    position: fixed; /* fijamos la navegacion en la parte superior */
     top: 0;
     width: 100%;
     max-height: 90px;
-    background-color: blue;
-    flex-wrap: wrap; 
+    background-color: blue; /* el color del fondo para el header */
+    flex-wrap: wrap; /* para el diseño más flexible */
 }
 
 .logo {
-    max-width: 200px;
+    max-width: 200px; /* para que el logotipo no será demasiado grande */
     width: 100%;  
     height: auto;
 }
 
 nav {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* para el diseño más flexible */
 }
 
 ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap; 
+    list-style: none; /* quitamos el estilo de la lista por defecto */
+    display: flex; 
+    flex-wrap: wrap; /* para el diseño más flexible */
 }
 
 ul li {
-    margin-right: 2rem;
+    margin-right: 2rem; /* ponemos el margin para los elementos de menú */
 }
 
 ul li:last-child {
-    margin-right: 0;
+    margin-right: 0; /* quitamos el margin para el ultimo elemento del menú */
 }
 
 nav ul li a {
-    text-decoration: none;
+    text-decoration: none; /* quitamos el diseño del texto por defecto */
     color: #FFEA79;
     transition: color 0.3s, text-decoration 0.3s;
     font-size: 1rem; 
 }
 
 nav ul li a:hover { 
-    text-decoration: underline; 
+    text-decoration: underline; /* quitamos el diseño por defecto */
 }

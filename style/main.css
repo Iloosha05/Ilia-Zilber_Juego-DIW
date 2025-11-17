@@ -1,0 +1,56 @@
+main {
+    max-width: 1000px;
+    margin: 0 auto;    
+}
+
+.content{
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin: 2rem;
+    margin-top: 9rem;
+}
+
+.arriva {
+    padding: 1rem;
+    display: flex;
+}
+
+.arriva p {
+    color: #333;
+}
+
+.arriva h3{
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+span {
+    color: #FFEA79;
+}
+
+.imagen {
+    margin-right: 1rem;
+    max-width: 500px;
+}
+
+.bajo {
+    padding: 1rem;
+}
+
+.bajo h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.bajo textarea {
+    width: 100%;
+    height: 80px;        
+    font-size: 0.8rem;
+    background-color: #FFEA79; 
+    color: #333;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+    resize: none;        
+    overflow-y: auto;      
+}

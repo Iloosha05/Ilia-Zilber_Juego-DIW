@@ -1,0 +1,13 @@
+.press-start-2p-regular {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+body {
+    background: #7B8B6F;
+    max-width: 100%;
+    overflow-x: hidden;
+    font-family: 'Press Start 2P', monospace;
+}

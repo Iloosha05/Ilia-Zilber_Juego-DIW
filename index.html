@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,78 +11,81 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Importamos el fuente -->
 </head>
 <body>
-    <main>
-        <div class="content"> <!-- El contenedor general -->
-            <div class="arriva"> <!-- El volumen dónde van a aparecer imagen y fica -->
-                <img class="imagen" id="imagen" src="./img/tittle-image.png">
-                <div class="derecho">
-                    <div class="ficha"> <!-- El campo de la ficha -->
-                        <h3>Ficha</h3>
-                        <p>Nombre: <span id="nombre">Jugador</span></p>
-                        <p>Fuerza: <span id="fuerza">10</span></p>
-                        <p>Defensa: <span id="defensa">5</span></p>
-                        <p>Vida: <span id="vida">100</span></p>
-                        <p>Oro: <span id="oro">50</span></p>
-                        <p>Pociones: <span id="pociones">2</span></p>
+    <div class="content"> <!-- El contenedor general -->
+        <div class="upper"> <!-- El contenedor de arriva, dónde van a aparecer imagen y ficha -->
+            <div class="upper-left"> <!-- El contenedor dónde se coloca la imagen -->
+                <img class="imagen" id="imagen" src="./img/en_portal.png" alt="Juego"> <!-- La imagen principal -->
+                <img class="monster" src="./img/monster.webp" alt="Monstruo"> <!-- La imagen del monstruo -->
+            </div>
+            <div class="upper-right">
+                <div class="ficha"> <!-- El campo de la ficha -->
+                    <h3>Ficha</h3>
+                    <p>Nombre: <span id="nombre">Jugador</span></p>
+                    <p>Fuerza: <span id="fuerza">10</span></p>
+                    <p>Defensa: <span id="defensa">5</span></p>
+                    <p>Vida: <span id="vida">100</span></p>
+                    <p>Oro: <span id="oro">50</span></p>
+                    <p>Pociones: <span id="pociones">2</span></p>
+                </div>
+                <a class="map-a" href="#"><img class="map" id="map" src="./img/map.svg" alt="mapa"></a> <!-- La mapa visual del juego -->
+            </div>
+        </div>
+        <div class="middle"> <!-- EL contenedor de la mitad, aquí están los controladores, nombre de la sala y la ventanita para el texto-->
+            <div class="middle-left"> 
+                <h2 id="locacion">En portal</h2>
+                <textarea id="texto-juego"></textarea>
+            </div>
+            <div class="middle-right"> 
+                <div class="controllers"> <!-- El campo de controladores -->
+                    <div class="row1">
+                        <a class="btn n" onclick="moveNorth()">
+                            <img class="normal" src="./img/contr_n.svg" alt="norte">
+                            <img class="hover" src="./img/contr_n_h.svg" alt="norte">
+                        </a>
                     </div>
-                    <div class="controladores">
-                        <div class="row1">
-                            <a class="btn n">
-                                <img class="normal" src="./img/contr_n.svg" alt="norte">
-                                <img class="hover" src="./img/contr_n_h.svg" alt="norte">
-                            </a>
-                        </div>
-
-                        <div class="row2">
-                            <a class="btn o">
-                                <img class="normal" src="./img/contr_o.svg" alt="oeste">
-                                <img class="hover" src="./img/contr_o_h.svg" alt="oeste">
-                            </a>
-
-                            <a class="btn c">
-                                <img src="./img/contr_c.svg" alt="centro">
-                            </a>
-
-                            <a class="btn e">
-                                <img class="normal" src="./img/contr_e.svg" alt="este">
-                                <img class="hover" src="./img/contr_e_h.svg" alt="este">
-                            </a>
-                        </div>
-
-                        <div class="row3">
-                            <a class="btn s">
-                                <img class="normal" src="./img/contr_s.svg" alt="sur">
-                                <img class="hover" src="./img/contr_s_h.svg" alt="sur">
-                            </a>
-                        </div>
+                    <div class="row2">
+                        <a class="btn o" onclick="moveWest()">
+                            <img class="normal" src="./img/contr_o.svg" alt="oeste">
+                            <img class="hover" src="./img/contr_o_h.svg" alt="oeste">
+                        </a>
+                        <a class="btn c">
+                            <img src="./img/contr_c.svg" alt="centro">
+                        </a>
+                        <a class="btn e" onclick="moveEast()">
+                            <img class="normal" src="./img/contr_e.svg" alt="este">
+                            <img class="hover" src="./img/contr_e_h.svg" alt="este">
+                        </a>
+                    </div>
+                    <div class="row3">
+                        <a class="btn s" onclick="moveSouth()">
+                            <img class="normal" src="./img/contr_s.svg" alt="sur">
+                            <img class="hover" src="./img/contr_s_h.svg" alt="sur">
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="bajo"> <!-- EL contenedor para la información de gameplay -->
-                <h2 id="locacion">Calle Lenin</h2>
-                <textarea id="texto-juego"></textarea>
-            </div>
-            <div class="botones">
-                <div class="accion"> <!-- El contenedor para los botones -->
+        </div>
+        <div class="down"> <!-- La parte inferior -->
+            <div class="down-left">
+                <div class="action"> <!-- El contenedor para los botones de acción -->
                     <button id="boton1">Botón-1</button>
                     <button id="boton2">Botón-2</button>
                 </div>
+            </div>
+            <div class="down-right"> 
                 <div class="icon-bar"> <!-- El contenedor para los iconos -->
                     <a class="icon-btn play">
                         <img class="normal" src="./img/play2.svg" alt="ejecutar">
                         <img class="hover" src="./img/play_hover.svg" alt="ejecutar">
                     </a>
-
                     <a class="icon-btn pause">
                         <img class="normal" src="./img/pause1.svg" alt="parar">
                         <img class="hover" src="./img/pause_hover.svg" alt="parar">
                     </a>
-
                     <a class="icon-btn save">
                         <img class="normal" src="./img/save2.svg" alt="guardar">
                         <img class="hover" src="./img/save_hover.svg" alt="guardar">
                     </a>
-
                     <a class="icon-btn load">
                         <img class="normal" src="./img/load2.svg" alt="parar">
                         <img class="hover" src="./img/load_hover.svg" alt="parar">
@@ -90,6 +93,6 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 </body>
 </html>

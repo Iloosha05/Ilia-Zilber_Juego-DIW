@@ -33,7 +33,7 @@ main {
 
 .monster {
     position: absolute; /* usamos position absolute para que la imágen de monstruo se muestre por encima de la imágen principal */       
-    top: 19%;                  
+    top: 8%;                  
     left: 7%;                  
     width: 160px;              
     height: auto;              

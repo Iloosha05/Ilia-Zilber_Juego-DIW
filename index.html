@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style/style.css">
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Importamos el fuente -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- Importamos el fuente -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Importamos el fuente -->
@@ -20,44 +20,56 @@
             <div class="upper-right">
                 <div class="ficha"> <!-- El campo de la ficha -->
                     <h3>Ficha</h3>
-                    <p>Nombre: <span id="nombre">Jugador</span></p>
-                    <p>Fuerza: <span id="fuerza">10</span></p>
-                    <p>Defensa: <span id="defensa">5</span></p>
-                    <p>Vida: <span id="vida">100</span></p>
-                    <p>Oro: <span id="oro">50</span></p>
-                    <p>Pociones: <span id="pociones">2</span></p>
+                    <p>Nombre: <span id="nombre"></span></p>
+                    <p>Fuerza: <span id="fuerza"></span></p>
+                    <p>Defensa: <span id="defensa"></span></p>
+                    <p>Vida: <span id="vida"></span></p>
+                    <p>Oro: <span id="oro"></span></p>
+                    <p>Pociones: <span id="pociones"></span></p>
                 </div>
+
+                <!-- NUEVO BLOQUE PARA mostrarHeroe() -->
+                <div id="hero-info"></div>
+
                 <a class="map-a" href="#"><img class="map" id="map" src="./img/map.svg" alt="mapa"></a> <!-- La mapa visual del juego -->
             </div>
         </div>
+
         <div class="middle"> <!-- EL contenedor de la mitad, aquí están los controladores, nombre de la sala y la ventanita para el texto-->
             <div class="middle-left"> 
-                <h2 id="locacion">En portal</h2>
+                <h2 id="locacion"></h2>
                 <textarea id="texto-juego"></textarea>
+
+                <!-- NUEVO BLOQUE PARA mostrarSala() -->
+                <div id="room-info"></div>
+
+                <!-- NUEVO BLOQUE PARA mostrarEnemigo() -->
+                <div id="enemy-info"></div>
             </div>
+
             <div class="middle-right"> 
                 <div class="controllers"> <!-- El campo de controladores -->
                     <div class="row1">
-                        <a class="btn n" onclick="moveNorth()">
+                        <a class="btn n">
                             <img class="normal" src="./img/contr_n.svg" alt="norte">
                             <img class="hover" src="./img/contr_n_h.svg" alt="norte">
                         </a>
                     </div>
                     <div class="row2">
-                        <a class="btn o" onclick="moveWest()">
+                        <a class="btn o">
                             <img class="normal" src="./img/contr_o.svg" alt="oeste">
                             <img class="hover" src="./img/contr_o_h.svg" alt="oeste">
                         </a>
                         <a class="btn c">
                             <img src="./img/contr_c.svg" alt="centro">
                         </a>
-                        <a class="btn e" onclick="moveEast()">
+                        <a class="btn e">
                             <img class="normal" src="./img/contr_e.svg" alt="este">
                             <img class="hover" src="./img/contr_e_h.svg" alt="este">
                         </a>
                     </div>
                     <div class="row3">
-                        <a class="btn s" onclick="moveSouth()">
+                        <a class="btn s">
                             <img class="normal" src="./img/contr_s.svg" alt="sur">
                             <img class="hover" src="./img/contr_s_h.svg" alt="sur">
                         </a>
@@ -65,11 +77,12 @@
                 </div>
             </div>
         </div>
+
         <div class="down"> <!-- La parte inferior -->
             <div class="down-left">
                 <div class="action"> <!-- El contenedor para los botones de acción -->
-                    <button id="boton1">Botón-1</button>
-                    <button id="boton2">Botón-2</button>
+                    <button id="boton1"></button>
+                    <button id="boton2"></button>
                 </div>
             </div>
             <div class="down-right"> 
@@ -96,3 +109,4 @@
     </div>
 </body>
 </html>
+

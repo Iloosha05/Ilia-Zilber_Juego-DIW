@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Juego</title>
     <link rel="stylesheet" href="./style/style.css">
     <script src="./js/script.js" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Importamos el fuente -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- Importamos el fuente -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Importamos el fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="content"> <!-- El contenedor general -->
-        <div class="upper"> <!-- El contenedor de arriva, dónde van a aparecer imagen y ficha -->
-            <div class="upper-left"> <!-- El contenedor dónde se coloca la imagen -->
-                <img class="imagen" id="imagen" src="./img/en_portal.png" alt="Juego"> <!-- La imagen principal -->
-                <img class="monster" src="./img/monster.webp" alt="Monstruo"> <!-- La imagen del monstruo -->
-            </div>
-            <div class="upper-right">
-                <div class="ficha"> <!-- El campo de la ficha -->
+    <section class="content">
+        <section class="upper">
+            <section class="upper-left">
+                <img class="imagen" id="imagen" src="./img/patio.jpeg" alt="Juego">
+                <img class="monster" src="./img/monster.webp" alt="Monstruo">
+            </section>
+            <section class="upper-right">
+                <section class="ficha">
                     <h3>Ficha</h3>
                     <p>Nombre: <span id="nombre"></span></p>
                     <p>Fuerza: <span id="fuerza"></span></p>
@@ -26,87 +26,74 @@
                     <p>Vida: <span id="vida"></span></p>
                     <p>Oro: <span id="oro"></span></p>
                     <p>Pociones: <span id="pociones"></span></p>
-                </div>
+                </section>
+                <section id="hero-info"></section>
+                <a class="map-a" href="#"><img class="map" id="map" src="./img/map.svg" alt="mapa"></a>
+            </section>
+        </section>
 
-                <!-- NUEVO BLOQUE PARA mostrarHeroe() -->
-                <div id="hero-info"></div>
-
-                <a class="map-a" href="#"><img class="map" id="map" src="./img/map.svg" alt="mapa"></a> <!-- La mapa visual del juego -->
-            </div>
-        </div>
-
-        <div class="middle"> <!-- EL contenedor de la mitad, aquí están los controladores, nombre de la sala y la ventanita para el texto-->
-            <div class="middle-left"> 
+        <section class="middle">
+            <section class="middle-left"> 
                 <h2 id="locacion"></h2>
-                <textarea id="texto-juego"></textarea>
+                <textarea id="texto-juego" readonly></textarea>
+                <section id="room-info"></section>
+                <section id="enemy-info"></section>
+            </section>
 
-                <!-- NUEVO BLOQUE PARA mostrarSala() -->
-                <div id="room-info"></div>
-
-                <!-- NUEVO BLOQUE PARA mostrarEnemigo() -->
-                <div id="enemy-info"></div>
-            </div>
-
-            <div class="middle-right"> 
-                <div class="controllers"> <!-- El campo de controladores -->
-                    <div class="row1">
-                        <a class="btn n">
+            <section class="middle-right"> 
+                <section class="controllers">
+                    <section class="row1">
+                        <button class="btn n" id="btn-norte">
                             <img class="normal" src="./img/contr_n.svg" alt="norte">
                             <img class="hover" src="./img/contr_n_h.svg" alt="norte">
-                        </a>
-                    </div>
-                    <div class="row2">
-                        <a class="btn o">
+                        </button>
+                    </section>
+                    <section class="row2">
+                        <button class="btn o" id="btn-oeste">
                             <img class="normal" src="./img/contr_o.svg" alt="oeste">
                             <img class="hover" src="./img/contr_o_h.svg" alt="oeste">
-                        </a>
-                        <a class="btn c">
+                        </button>
+                        <button class="btn c">
                             <img src="./img/contr_c.svg" alt="centro">
-                        </a>
-                        <a class="btn e">
+                        </button>
+                        <button class="btn e" id="btn-este">
                             <img class="normal" src="./img/contr_e.svg" alt="este">
                             <img class="hover" src="./img/contr_e_h.svg" alt="este">
-                        </a>
-                    </div>
-                    <div class="row3">
-                        <a class="btn s">
+                        </button>
+                    </section>
+                    <section class="row3">
+                        <button class="btn s" id="btn-sur">
                             <img class="normal" src="./img/contr_s.svg" alt="sur">
                             <img class="hover" src="./img/contr_s_h.svg" alt="sur">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        </button>
+                    </section>
+                </section>
+            </section>
+        </section>
 
-        <div class="down"> <!-- La parte inferior -->
-            <div class="down-left">
-                <div class="action"> <!-- El contenedor para los botones de acción -->
+        <section class="down">
+            <section class="down-left">
+                <section class="action">
                     <button id="boton1"></button>
                     <button id="boton2"></button>
-                </div>
-            </div>
-            <div class="down-right"> 
-                <div class="icon-bar"> <!-- El contenedor para los iconos -->
-                    <a class="icon-btn play">
-                        <img class="normal" src="./img/play2.svg" alt="ejecutar">
-                        <img class="hover" src="./img/play_hover.svg" alt="ejecutar">
-                    </a>
-                    <a class="icon-btn pause">
-                        <img class="normal" src="./img/pause1.svg" alt="parar">
-                        <img class="hover" src="./img/pause_hover.svg" alt="parar">
-                    </a>
-                    <a class="icon-btn save">
-                        <img class="normal" src="./img/save2.svg" alt="guardar">
-                        <img class="hover" src="./img/save_hover.svg" alt="guardar">
-                    </a>
-                    <a class="icon-btn load">
-                        <img class="normal" src="./img/load2.svg" alt="parar">
-                        <img class="hover" src="./img/load_hover.svg" alt="parar">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+                </section>
+            </section>
+            <section class="down-right"> 
+                <section class="icon-bar">
+                    <a class="icon-btn play"><img class="normal" src="./img/play2.svg" alt="play"><img class="hover" src="./img/play_hover.svg" alt="play"></a>
+                    <a class="icon-btn pause"><img class="normal" src="./img/pause1.svg" alt="pause"><img class="hover" src="./img/pause_hover.svg" alt="pause"></a>
+                    <a class="icon-btn save"><img class="normal" src="./img/save2.svg" alt="save"><img class="hover" src="./img/save_hover.svg" alt="save"></a>
+                    <a class="icon-btn load"><img class="normal" src="./img/load2.svg" alt="load"><img class="hover" src="./img/load_hover.svg" alt="load"></a>
+                </section>
+            </section>
+        </section>
+    </section>
+
+    <template id="enemy-template">
+        <section class="enemy-card">
+            <h3 class="enemy-name"></h3>
+            <p class="enemy-desc"></p>
+        </section>
+    </template>
 </body>
 </html>
-

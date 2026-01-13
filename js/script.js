@@ -1,4 +1,4 @@
-/** Variables del estado del juego */
+//variables del estado del juego
 let defaultGameState = { 
     player: {
         name: "Ilia",
@@ -12,7 +12,7 @@ let defaultGameState = {
     },
 
     map: { 
-        /** Array de objetos para las salas */
+        //array de objetos para las salas
         rooms: [
             {
                 id: 1,
@@ -118,18 +118,18 @@ let defaultGameState = {
     }
 };
 
-/** Mostramos datos del héroe */
+//mostramos datos del héroe
 function mostrarHeroe() {
     let { name, strength, defense, health, gold, potions } = defaultGameState.player;
     document.getElementById("nombre").textContent = name; //su nombre 
     document.getElementById("fuerza").textContent = strength; //su fuerza
     document.getElementById("defensa").textContent = defense; //su defensa
-    document.getElementById("vida").textContent = health; //su health(?)
+    document.getElementById("vida").textContent = health; //su vida
     document.getElementById("oro").textContent = gold; //su oro
     document.getElementById("pociones").textContent = potions; //sus pociones
 }
 
-/** Actualizamos la sala actual */
+//actualizamos la sala actual
 function mostrarSala() {
     let room = defaultGameState.map.rooms.find(function(room) { //extraemos datos de cada habitación room
         return room.id === defaultGameState.player.currentRoom; //buscamos, dónde la id coincide con la id de habitación actual
@@ -139,50 +139,72 @@ function mostrarSala() {
     document.getElementById("imagen").src = "img/" + room.img; //mostramos la imagen de la habitación actual
     document.getElementById("map").src = "img/" + room.map; //mostramos la mapa de la habitación actual
     
-    let salidas = "Salidas: ";
+    let salidas = "Salidas: "; //salidas posibles
     if (room.north > 0) salidas += " Norte";
     if (room.south > 0) salidas += " Sur";
     if (room.east > 0) salidas += " Este";
     if (room.west > 0) salidas += " Oeste";
 
-    document.getElementById("texto-juego").value = room.description + "\n\n" + salidas;
+    document.getElementById("texto-juego").value = room.description + "\n\n" + salidas; //añadimos la descripción de la abitación y salidas posibles al textarea
 }
 
-/** La logica de movimiento */
+//la logica de movimiento
 function move(direction) {
-    let currentRoom = defaultGameState.map.rooms.find(function(r) {
-        return r.id === defaultGameState.player.currentRoom;
+    let currentRoom = defaultGameState.map.rooms.find(function(room) {
+        return room.id === defaultGameState.player.currentRoom; //recogemos la información de la habitación, dóonde estámos
     });
 
-    // Propiedades del objeto room
-    let nextRoomId = currentRoom[direction];
+    let nextRoomId = currentRoom[direction]; //propiedades del objeto room
 
     if (nextRoomId > 0) {
         defaultGameState.player.currentRoom = nextRoomId;
         
-        // Recargamos el enemigo
-        defaultGameState.player.currentEnemy = null;
+        defaultGameState.player.currentEnemy = null; //recargamos el enemigo
         document.getElementById("enemy-info").innerHTML = "";
-        document.querySelector(".monster").style.display = "none";
-        
-        mostrarSala();
-        intentarEnemigo();
+        document.querySelector(".monster").style.display = "none";        
+        mostrarSala(); //mostramos la sala de nuevo
+        intentarEnemigo(); //cargamos el enemigo, si existe
     } else {
-        document.getElementById("texto-juego").value += "\n\nNo puedes ir por ahí.";
+        document.getElementById("texto-juego").value += "\n\nNo puedes ir por ahí."; //si no hay salida aqu'i, informamos el usuario
     }
 }
 
-/** Probabilidad de enemigo */
+//intentamos generar un enemigo en la sala actual
 function intentarEnemigo() {
     let room = defaultGameState.map.rooms.find(function(room) {
-        return room.id === defaultGameState.player.currentRoom;
+        return room.id === defaultGameState.player.currentRoom; //recogemos la informaci'on de la habitaci'on, d'onde est'amos
     });
 
-    // Llamamos la funcion que genera un enemigo randomo
-    if (room.monsterProb > 0 && Math.random() < room.monsterProb) {
-        generarEnemigo();
+    if (room.monsterProb <= 0) {
+        return; //si en la sala no pueden aparecer enemigos, salimos
+    }
+
+    let randomValue = Math.random(); //creamos un número aleatorio entre 0 y 1
+    let enemies = defaultGameState.map.enemies;
+
+    if (randomValue < 0.02) { //comprobamos, si aparece el jefe
+        let boss = enemies.find(function(enemy) {
+            return enemy.isBoss === true; //buscamos el array de enemy, que tiene isBoss = trfue
+        });
+
+        defaultGameState.player.currentEnemy = boss;
+        mostrarEnemigo(boss); //mostramos el jefe
+        return;
+    }
+
+    if (randomValue < room.monsterProb) { //si no es jefe, comprobamos enemigo normal
+
+        let normalEnemies = enemies.filter(function(enemy) {
+            return enemy.isBoss === false; //buscamos el array de enemy, que tiene isBoss = false
+        });
+
+        let randomEnemy = normalEnemies[Math.random() * normalEnemies.length]; //buscamos un enemigo normal randomo
+
+        defaultGameState.player.currentEnemy = randomEnemy;
+        mostrarEnemigo(randomEnemy); //mostramos el enemigo habitual
     }
 }
+
 
 /** Aqu'i creamos un enemigo randomo */
 function generarEnemigo() {
@@ -219,37 +241,29 @@ function generarEnemigo() {
     document.getElementById("texto-juego").value += `\n\nCuidado! Un ${enemigo.name} ha aparecido.`;
 }
 
-/** Funcion para buscar oro */
+//función para buscar oro
 function buscarOro() {
-    let room = defaultGameState.map.rooms.find(function(r) {
-        return r.id === defaultGameState.player.currentRoom;
+    let room = defaultGameState.map.rooms.find(function(room) {
+        return room.id === defaultGameState.player.currentRoom; //recogemos la información de la habitación, dóonde estáamos
     });
 
-    if (room.monsterProb > 0) {
-        let oro = Math.floor(Math.random() * 11);
-        defaultGameState.player.gold += oro;
-        document.getElementById("oro").textContent = defaultGameState.player.gold;
-        document.getElementById("texto-juego").value += `\nHas encontrado ${oro} monedas de oro.`;
-    } else {
-        document.getElementById("texto-juego").value += "\nAquí no hay oro.";
+    if (room.monsterProb <= 0) { //solo se puede buscar oro si hay probabilidad de enemigos
+        document.getElementById("texto-juego").value += "\n\nAquí no hay nada interesante.";
+        return;
     }
+
+    let goldFound = Math.floor(Math.random() * 11); //generamos oro aleatorio entre 0 y 10
+
+    defaultGameState.player.gold += goldFound; //sumamos oro encontrado
+
+    document.getElementById("texto-juego").value += "\n\nHas encontrado " + goldFound + " monedas de oro."; //informamos, si el jugador encuentra oro
+
+    mostrarHeroe(); //actualizamos la ficha del héroe
 }
 
-// Eventos
-document.addEventListener("DOMContentLoaded", function() {
-    mostrarHeroe();
-    mostrarSala();
-    
-    document.getElementById("boton1").textContent = "Buscar Oro";
-    document.getElementById("boton2").textContent = "Poción";
-
-    // Eventos de botones de navegación
-    document.getElementById("btn-norte").addEventListener("click", function() { move('north'); });
-    document.getElementById("btn-sur").addEventListener("click", function() { move('south'); });
-    document.getElementById("btn-este").addEventListener("click", function() { move('east'); });
-    document.getElementById("btn-oeste").addEventListener("click", function() { move('west'); });
-    
-    document.getElementById("boton1").addEventListener("click", buscarOro);
+//el evento del bot'on buscar oro
+document.getElementById("boton1").addEventListener("click", function () {
+    buscarOro();
 });
 
 

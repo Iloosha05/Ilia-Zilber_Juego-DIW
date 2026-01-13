@@ -41,7 +41,7 @@ let defaultGameState = {
             {
                 id: 3,
                 name: "Tienda",
-                description: "Aquí puedes encontrar todo, incluso enemigos",
+                description: "Aquí puedes encontrar todo, incluso enemigos.",
                 monsterProb: 0.7,
                 north: 0,
                 south: 0,
@@ -65,7 +65,7 @@ let defaultGameState = {
             {
                 id: 5,
                 name: "Zona Infantil",
-                description: "Columpios oxidados y silencio.",
+                description: "Silencio.",
                 monsterProb: 0.7,
                 north: 0,
                 south: 1,
@@ -77,7 +77,7 @@ let defaultGameState = {
             {
                 id: 6,
                 name: "En el portal",
-                description: "Dentro del portal. Solo puedes salir al sur.",
+                description: "Que oscuro...",
                 monsterProb: 1.0,
                 north: 0,
                 south: 4,
@@ -90,32 +90,54 @@ let defaultGameState = {
         
         //la lista de enemigos
         enemies: [ 
-            { name: "Gopnik", isBoss: false, description: "Agresivo con chándal.", health: 40, strength: 8, img: "gopnik.webp" },
-            { name: "Cliente enfadado", isBoss: false, description: "Grita mucho.", health: 55, strength: 10, img: "cliente.webp" },
-            { name: "Bandido", isBoss: true, description: "El jefe final.", health: 120, strength: 18, img: "bandido.webp" }
+            { 
+                name: "Gopnik",
+                isBoss: false,
+                description: "Agresivo con chándal.",
+                health: 40,
+                strength: 8,
+                img: "gopnik.webp" 
+            },
+            { 
+                name: "Cliente enfadado",
+                isBoss: false,
+                description: "Grita mucho.",
+                health: 55,
+                strength: 10,
+                img: "cliente.webp" 
+            },
+            { 
+                name: "Bandido",
+                isBoss: true,
+                description: "El jefe final.",
+                health: 120,
+                strength: 18,
+                img: "bandido.webp"
+            }
         ]
     }
 };
 
 /** Mostramos datos del héroe */
 function mostrarHeroe() {
-    document.getElementById("nombre").textContent = defaultGameState.player.name;
-    document.getElementById("fuerza").textContent = defaultGameState.player.strength;
-    document.getElementById("defensa").textContent = defaultGameState.player.defense;
-    document.getElementById("vida").textContent = defaultGameState.player.health;
-    document.getElementById("oro").textContent = defaultGameState.player.gold;
-    document.getElementById("pociones").textContent = defaultGameState.player.potions;
+    let { name, strength, defense, health, gold, potions } = defaultGameState.player;
+    document.getElementById("nombre").textContent = name; //su nombre 
+    document.getElementById("fuerza").textContent = strength; //su fuerza
+    document.getElementById("defensa").textContent = defense; //su defensa
+    document.getElementById("vida").textContent = health; //su health(?)
+    document.getElementById("oro").textContent = gold; //su oro
+    document.getElementById("pociones").textContent = potions; //sus pociones
 }
 
 /** Actualizamos la sala actual */
 function mostrarSala() {
-    let room = defaultGameState.map.rooms.find(function(r) {
-        return r.id === defaultGameState.player.currentRoom;
+    let room = defaultGameState.map.rooms.find(function(room) { //extraemos datos de cada habitación room
+        return room.id === defaultGameState.player.currentRoom; //buscamos, dónde la id coincide con la id de habitación actual
     });
 
-    document.getElementById("locacion").textContent = room.name;
-    document.getElementById("imagen").src = "img/" + room.img;
-    document.getElementById("map").src = "img/" + room.map;
+    document.getElementById("locacion").textContent = room.name; //mostramos el nombre de la habitación actual
+    document.getElementById("imagen").src = "img/" + room.img; //mostramos la imagen de la habitación actual
+    document.getElementById("map").src = "img/" + room.map; //mostramos la mapa de la habitación actual
     
     let salidas = "Salidas: ";
     if (room.north > 0) salidas += " Norte";
@@ -152,8 +174,8 @@ function move(direction) {
 
 /** Probabilidad de enemigo */
 function intentarEnemigo() {
-    let room = defaultGameState.map.rooms.find(function(r) {
-        return r.id === defaultGameState.player.currentRoom;
+    let room = defaultGameState.map.rooms.find(function(room) {
+        return room.id === defaultGameState.player.currentRoom;
     });
 
     // Llamamos la funcion que genera un enemigo randomo
@@ -167,14 +189,14 @@ function generarEnemigo() {
     let enemigos = defaultGameState.map.enemies;
     let enemigo;
     if (defaultGameState.player.currentRoom === 6) {
-        enemigo = enemigos.find(function(e) { return e.isBoss; });
+        enemigo = enemigos.find(function(enemigo) { return enemigo.isBoss; });
         document.getElementById("texto-juego").value += `\n\nHAS ENCONTRADO AL JEFE FINAL!`;
     } else {
         let bossRoll = Math.random();
         if (bossRoll <= 0.02) {
-            enemigo = enemigos.find(function(e) { return e.isBoss; });
+            enemigo = enemigos.find(function(enemigo) { return enemigo.isBoss; });
         } else {
-            let normales = enemigos.filter(function(e) { return !e.isBoss; });
+            let normales = enemigos.filter(function(enemigo) { return !enemigo.isBoss; });
             enemigo = normales[Math.floor(Math.random() * normales.length)];
         }
     }

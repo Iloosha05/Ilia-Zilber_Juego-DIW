@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", function() {
+    mostrarHeroe(); //cargamos los datos iniciales del jugador
+    mostrarSala(); //cargamos la sala inicial
+});
+
 //variables del estado del juego
 let defaultGameState = { 
     player: {
@@ -198,7 +203,7 @@ function intentarEnemigo() {
             return enemy.isBoss === false; //buscamos el array de enemy, que tiene isBoss = false
         });
 
-        let randomEnemy = normalEnemies[Math.random() * normalEnemies.length]; //buscamos un enemigo normal randomo
+        let randomEnemy = normalEnemies[Math.floor(Math.random() * normalEnemies.length)]; //buscamos un enemigo normal randomo
 
         defaultGameState.player.currentEnemy = randomEnemy;
         mostrarEnemigo(randomEnemy); //mostramos el enemigo habitual
@@ -206,40 +211,29 @@ function intentarEnemigo() {
 }
 
 
-/** Aqu'i creamos un enemigo randomo */
-function generarEnemigo() {
-    let enemigos = defaultGameState.map.enemies;
-    let enemigo;
-    if (defaultGameState.player.currentRoom === 6) {
-        enemigo = enemigos.find(function(enemigo) { return enemigo.isBoss; });
-        document.getElementById("texto-juego").value += `\n\nHAS ENCONTRADO AL JEFE FINAL!`;
-    } else {
-        let bossRoll = Math.random();
-        if (bossRoll <= 0.02) {
-            enemigo = enemigos.find(function(enemigo) { return enemigo.isBoss; });
-        } else {
-            let normales = enemigos.filter(function(enemigo) { return !enemigo.isBoss; });
-            enemigo = normales[Math.floor(Math.random() * normales.length)];
-        }
-    }
+function mostrarEnemigo(enemy) {
 
-    defaultGameState.player.currentEnemy = enemigo;
+    document.getElementById("enemy-info").innerHTML = "";
 
     let template = document.getElementById("enemy-template");
     let clone = template.content.cloneNode(true);
-    
-    clone.querySelector(".enemy-name").textContent = enemigo.name;
-    clone.querySelector(".enemy-desc").textContent = enemigo.description;
-    
+
+    clone.querySelector(".enemy-name").textContent = enemy.name;
+    clone.querySelector(".enemy-desc").textContent = enemy.description;
+
     document.getElementById("enemy-info").appendChild(clone);
 
-    // Mostrar imagen monstruo
     let monsterImg = document.querySelector(".monster");
-    monsterImg.src = "img/" + enemigo.img;
+    monsterImg.src = "img/" + enemy.img;
     monsterImg.style.display = "block";
-    
-    document.getElementById("texto-juego").value += `\n\nCuidado! Un ${enemigo.name} ha aparecido.`;
+
+    document.getElementById("texto-juego").value +=
+        "\n\n¡Ha aparecido un enemigo!\n" +
+        enemy.name + "\n" +
+        enemy.description +
+        (enemy.isBoss ? "\n(Es el jefe final)" : "");
 }
+
 
 //función para buscar oro
 function buscarOro() {
@@ -265,5 +259,23 @@ function buscarOro() {
 document.getElementById("boton1").addEventListener("click", function () {
     buscarOro();
 });
+
+//eventos de los botones de movimiento
+document.getElementById("btn-norte").addEventListener("click", function () {
+    move("north");
+});
+
+document.getElementById("btn-sur").addEventListener("click", function () {
+    move("south");
+});
+
+document.getElementById("btn-este").addEventListener("click", function () {
+    move("east");
+});
+
+document.getElementById("btn-oeste").addEventListener("click", function () {
+    move("west");
+});
+
 
 

@@ -1,8 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    mostrarHeroe(); //cargamos los datos iniciales del jugador
-    mostrarSala(); //cargamos la sala inicial
-});
-
 //variables del estado del juego
 let defaultGameState = { 
     player: {
@@ -123,18 +118,34 @@ let defaultGameState = {
     }
 };
 
-//mostramos datos del héroe
-function mostrarHeroe() {
-    let { name, strength, defense, health, gold, potions } = defaultGameState.player;
-    document.getElementById("nombre").textContent = name; //su nombre 
-    document.getElementById("fuerza").textContent = strength; //su fuerza
-    document.getElementById("defensa").textContent = defense; //su defensa
-    document.getElementById("vida").textContent = health; //su vida
-    document.getElementById("oro").textContent = gold; //su oro
-    document.getElementById("pociones").textContent = potions; //sus pociones
+//la funcción para mandar el texto a la textarea
+function escribirTexto(texto) {
+    let textarea = document.getElementById("texto-juego"); //llamamos la textarea 
+    textarea.value += texto + "\n"; //separamos un poco el texto
 }
 
-//actualizamos la sala actual
+//mostramos datos del héroe
+function mostrarHeroe() {
+
+    let heroInfo = document.getElementById("hero-info");
+    heroInfo.innerHTML = ""; //limpiamos ficha anterior
+
+    let template = document.getElementById("hero-template");
+    let clone = template.content.cloneNode(true);
+
+    let player = defaultGameState.player;
+
+    clone.querySelector(".hero-name").textContent = player.name; //su nombre
+    clone.querySelector(".hero-health").textContent = player.health; //su vida
+    clone.querySelector(".hero-strength").textContent = player.strength; //su fuerza
+    clone.querySelector(".hero-defense").textContent = player.defense; //su defensa
+    clone.querySelector(".hero-gold").textContent = player.gold; //su oro
+    clone.querySelector(".hero-potions").textContent = player.potions; //sus pociones
+
+    heroInfo.appendChild(clone);
+}
+
+//actualizamos y mostramos la sala actual
 function mostrarSala() {
     let room = defaultGameState.map.rooms.find(function(room) { //extraemos datos de cada habitación room
         return room.id === defaultGameState.player.currentRoom; //buscamos, dónde la id coincide con la id de habitación actual
@@ -144,13 +155,15 @@ function mostrarSala() {
     document.getElementById("imagen").src = "img/" + room.img; //mostramos la imagen de la habitación actual
     document.getElementById("map").src = "img/" + room.map; //mostramos la mapa de la habitación actual
     
-    let salidas = "Salidas: "; //salidas posibles
+    let salidas = "Salidas:"; //comprobamos, que salidas existen
     if (room.north > 0) salidas += " Norte";
     if (room.south > 0) salidas += " Sur";
     if (room.east > 0) salidas += " Este";
     if (room.west > 0) salidas += " Oeste";
 
-    document.getElementById("texto-juego").value = room.description + "\n\n" + salidas; //añadimos la descripción de la abitación y salidas posibles al textarea
+    escribirTexto("Has entrado a... " + room.name + "\n"); //mostramos el nombre de la habitación
+    escribirTexto(room.description); //mostramos su descripción
+    escribirTexto(salidas); //mostramos las salidas
 }
 
 //la logica de movimiento
@@ -165,12 +178,13 @@ function move(direction) {
         defaultGameState.player.currentRoom = nextRoomId;
         
         defaultGameState.player.currentEnemy = null; //recargamos el enemigo
+        document.getElementById("texto-juego").value = ""; //limpiamos la textarea
         document.getElementById("enemy-info").innerHTML = "";
         document.querySelector(".monster").style.display = "none";        
         mostrarSala(); //mostramos la sala de nuevo
         intentarEnemigo(); //cargamos el enemigo, si existe
     } else {
-        document.getElementById("texto-juego").value += "\n\nNo puedes ir por ahí."; //si no hay salida aqu'i, informamos el usuario
+        escribirTexto("\nNo puedes ir por ahí."); //si no hay salida aqu'i, informamos el usuario
     }
 }
 
@@ -210,28 +224,20 @@ function intentarEnemigo() {
     }
 }
 
-
+//mostramos todo de enemigo
 function mostrarEnemigo(enemy) {
-
-    document.getElementById("enemy-info").innerHTML = "";
-
-    let template = document.getElementById("enemy-template");
-    let clone = template.content.cloneNode(true);
-
-    clone.querySelector(".enemy-name").textContent = enemy.name;
-    clone.querySelector(".enemy-desc").textContent = enemy.description;
-
-    document.getElementById("enemy-info").appendChild(clone);
-
     let monsterImg = document.querySelector(".monster");
     monsterImg.src = "img/" + enemy.img;
     monsterImg.style.display = "block";
 
-    document.getElementById("texto-juego").value +=
-        "\n\n¡Ha aparecido un enemigo!\n" +
-        enemy.name + "\n" +
-        enemy.description +
-        (enemy.isBoss ? "\n(Es el jefe final)" : "");
+    escribirTexto("Ha aparecido un enemigo!");
+    escribirTexto(enemy.name); //mostramos el nombre de enemigo
+    escribirTexto(enemy.description); //mostramos la descripción del enmigo
+
+    if (enemy.isBoss) {
+        escribirTexto("Es el jefe final"); //si es un jefe, informamos
+    }
+
 }
 
 
@@ -255,27 +261,34 @@ function buscarOro() {
     mostrarHeroe(); //actualizamos la ficha del héroe
 }
 
-//el evento del bot'on buscar oro
-document.getElementById("boton1").addEventListener("click", function () {
-    buscarOro();
+
+document.addEventListener("DOMContentLoaded", function() {
+    mostrarHeroe(); //cargamos los datos iniciales del jugador
+    mostrarSala(); //cargamos la sala inicial
+
+    //el evento del bot'on buscar oro
+    document.getElementById("boton1").addEventListener("click", function () {
+        buscarOro();
+    });
+
+    //eventos de los botones de movimiento
+    document.getElementById("btn-norte").addEventListener("click", function () {
+        move("north");
+    });
+
+    document.getElementById("btn-sur").addEventListener("click", function () {
+        move("south");
+    });
+
+    document.getElementById("btn-este").addEventListener("click", function () {
+        move("east");
+    });
+
+    document.getElementById("btn-oeste").addEventListener("click", function () {
+        move("west");
+    });
 });
 
-//eventos de los botones de movimiento
-document.getElementById("btn-norte").addEventListener("click", function () {
-    move("north");
-});
-
-document.getElementById("btn-sur").addEventListener("click", function () {
-    move("south");
-});
-
-document.getElementById("btn-este").addEventListener("click", function () {
-    move("east");
-});
-
-document.getElementById("btn-oeste").addEventListener("click", function () {
-    move("west");
-});
 
 
 

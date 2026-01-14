@@ -38,11 +38,14 @@ main {
     width: 160px;              
     height: auto;              
     pointer-events: none;      
-    display: none; /* Скрыто по умолчанию */
+    display: none;
 }
 
 .upper-right{
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .upper h3{
@@ -54,9 +57,13 @@ main {
     margin-bottom: 1.5rem;
 }
 
-.ficha p{
+.hero-card {
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+}
+
+.hero-card p{
     margin-bottom: 0.5rem;
-    font-size: 0.85rem;
 }
 
 .ficha span{
@@ -121,7 +128,6 @@ main {
     margin-bottom: 0;
 }
 
-/* Изменено с <a> на <button> в HTML, стили обновлены */
 .btn {
     display: inline-block;
     position: relative;

@@ -18,15 +18,17 @@
                 <img class="monster" src="./img/monster.webp" alt="Monstruo">
             </section>
             <section class="upper-right">
-                <section class="ficha">
+                <template id="hero-template" class="hero-template">
                     <h3>Ficha</h3>
-                    <p>Nombre: <span id="nombre"></span></p>
-                    <p>Fuerza: <span id="fuerza"></span></p>
-                    <p>Defensa: <span id="defensa"></span></p>
-                    <p>Vida: <span id="vida"></span></p>
-                    <p>Oro: <span id="oro"></span></p>
-                    <p>Pociones: <span id="pociones"></span></p>
-                </section>
+                    <div class="hero-card">
+                        <p><strong>Nombre:</strong> <span class="hero-name"></span></p>
+                        <p><strong>Vida:</strong> <span class="hero-health"></span></p>
+                        <p><strong>Fuerza:</strong> <span class="hero-strength"></span></p>
+                        <p><strong>Defensa:</strong> <span class="hero-defense"></span></p>
+                        <p><strong>Oro:</strong> <span class="hero-gold"></span></p>
+                        <p><strong>Pociones:</strong> <span class="hero-potions"></span></p>
+                    </div>
+                </template>
                 <section id="hero-info"></section>
                 <a class="map-a" href="#"><img class="map" id="map" src="./img/map.svg" alt="mapa"></a>
             </section>
@@ -74,7 +76,7 @@
         <section class="down">
             <section class="down-left">
                 <section class="action">
-                    <button id="boton1"></button>
+                    <button id="boton1">Buscar oro</button>
                     <button id="boton2"></button>
                 </section>
             </section>

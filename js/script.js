@@ -124,9 +124,20 @@ function escribirTexto(texto) {
     textarea.value += texto + "\n"; //separamos un poco el texto
 }
 
+//la funcción para limpiar la textarea
+function limpiarTexto() {
+    document.getElementById("texto-juego").value = "";
+}
+
+//la funcción para obtener la sala actual
+function obtenerSalaActual() {
+    return defaultGameState.map.rooms.find(function(room) {
+        return room.id === defaultGameState.player.currentRoom;
+    });
+}
+
 //mostramos datos del héroe
 function mostrarHeroe() {
-
     let heroInfo = document.getElementById("hero-info");
     heroInfo.innerHTML = ""; //limpiamos ficha anterior
 
@@ -147,9 +158,7 @@ function mostrarHeroe() {
 
 //actualizamos y mostramos la sala actual
 function mostrarSala() {
-    let room = defaultGameState.map.rooms.find(function(room) { //extraemos datos de cada habitación room
-        return room.id === defaultGameState.player.currentRoom; //buscamos, dónde la id coincide con la id de habitación actual
-    });
+    let room = obtenerSalaActual();
 
     document.getElementById("locacion").textContent = room.name; //mostramos el nombre de la habitación actual
     document.getElementById("imagen").src = "img/" + room.img; //mostramos la imagen de la habitación actual
@@ -168,9 +177,7 @@ function mostrarSala() {
 
 //la logica de movimiento
 function move(direction) {
-    let currentRoom = defaultGameState.map.rooms.find(function(room) {
-        return room.id === defaultGameState.player.currentRoom; //recogemos la información de la habitación, dóonde estámos
-    });
+    let room = obtenerSalaActual();
 
     let nextRoomId = currentRoom[direction]; //propiedades del objeto room
 
@@ -178,7 +185,7 @@ function move(direction) {
         defaultGameState.player.currentRoom = nextRoomId;
         
         defaultGameState.player.currentEnemy = null; //recargamos el enemigo
-        document.getElementById("texto-juego").value = ""; //limpiamos la textarea
+        limpiarTexto(); // limpiamos la textarea
         document.getElementById("enemy-info").innerHTML = "";
         document.querySelector(".monster").style.display = "none";        
         mostrarSala(); //mostramos la sala de nuevo
@@ -190,9 +197,7 @@ function move(direction) {
 
 //intentamos generar un enemigo en la sala actual
 function intentarEnemigo() {
-    let room = defaultGameState.map.rooms.find(function(room) {
-        return room.id === defaultGameState.player.currentRoom; //recogemos la informaci'on de la habitaci'on, d'onde est'amos
-    });
+    let room = obtenerSalaActual();
 
     if (room.monsterProb <= 0) {
         return; //si en la sala no pueden aparecer enemigos, salimos
@@ -243,9 +248,7 @@ function mostrarEnemigo(enemy) {
 
 //función para buscar oro
 function buscarOro() {
-    let room = defaultGameState.map.rooms.find(function(room) {
-        return room.id === defaultGameState.player.currentRoom; //recogemos la información de la habitación, dóonde estáamos
-    });
+    let room = obtenerSalaActual();
 
     if (room.monsterProb <= 0) { //solo se puede buscar oro si hay probabilidad de enemigos
         document.getElementById("texto-juego").value += "\n\nAquí no hay nada interesante.";
@@ -288,7 +291,3 @@ document.addEventListener("DOMContentLoaded", function() {
         move("west");
     });
 });
-
-
-
-

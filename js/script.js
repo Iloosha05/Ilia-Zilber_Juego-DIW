@@ -136,7 +136,25 @@ function obtenerSalaActual() {
     });
 }
 
-//mostramos datos del héroe
+//la función para buscar oro
+function buscarOro() {
+    let room = obtenerSalaActual();
+
+    if (room.monsterProb <= 0) { //solo se puede buscar oro si hay probabilidad de enemigos
+        document.getElementById("texto-juego").value += "\n\nAquí no hay nada interesante.";
+        return;
+    }
+
+    let goldFound = Math.floor(Math.random() * 11); //generamos oro aleatorio entre 0 y 10
+
+    defaultGameState.player.gold += goldFound; //sumamos oro encontrado
+
+    document.getElementById("texto-juego").value += "\n\nHas encontrado " + goldFound + " monedas de oro."; //informamos, si el jugador encuentra oro
+
+    mostrarHeroe(); //actualizamos la ficha del héroe
+}
+
+//la función para mostrar datos de héroe
 function mostrarHeroe() {
     let heroInfo = document.getElementById("hero-info");
     heroInfo.innerHTML = ""; //limpiamos ficha anterior
@@ -156,7 +174,7 @@ function mostrarHeroe() {
     heroInfo.appendChild(clone);
 }
 
-//actualizamos y mostramos la sala actual
+//la función para actualizar y mostrar la sala actual
 function mostrarSala() {
     let room = obtenerSalaActual();
 
@@ -175,7 +193,7 @@ function mostrarSala() {
     escribirTexto(salidas); //mostramos las salidas
 }
 
-//la logica de movimiento
+//la funcion para mover (cambiar la sala)
 function move(direction) {
     let room = obtenerSalaActual();
 
@@ -244,26 +262,6 @@ function mostrarEnemigo(enemy) {
     }
 
 }
-
-
-//función para buscar oro
-function buscarOro() {
-    let room = obtenerSalaActual();
-
-    if (room.monsterProb <= 0) { //solo se puede buscar oro si hay probabilidad de enemigos
-        document.getElementById("texto-juego").value += "\n\nAquí no hay nada interesante.";
-        return;
-    }
-
-    let goldFound = Math.floor(Math.random() * 11); //generamos oro aleatorio entre 0 y 10
-
-    defaultGameState.player.gold += goldFound; //sumamos oro encontrado
-
-    document.getElementById("texto-juego").value += "\n\nHas encontrado " + goldFound + " monedas de oro."; //informamos, si el jugador encuentra oro
-
-    mostrarHeroe(); //actualizamos la ficha del héroe
-}
-
 
 document.addEventListener("DOMContentLoaded", function() {
     mostrarHeroe(); //cargamos los datos iniciales del jugador

@@ -179,7 +179,7 @@ function mostrarSala() {
 function move(direction) {
     let room = obtenerSalaActual();
 
-    let nextRoomId = currentRoom[direction]; //propiedades del objeto room
+    let nextRoomId = room[direction]; //propiedades del objeto room
 
     if (nextRoomId > 0) {
         defaultGameState.player.currentRoom = nextRoomId;

@@ -122,11 +122,14 @@ let defaultGameState = {
 function escribirTexto(texto) {
     let textarea = document.getElementById("texto-juego"); //llamamos la textarea 
     textarea.value += texto + "\n"; //separamos un poco el texto
+    textarea.scrollTop = textarea.scrollHeight;
 }
 
 //la funcción para limpiar la textarea
 function limpiarTexto() {
+    let textarea = document.getElementById("texto-juego");
     document.getElementById("texto-juego").value = "";
+    textarea.scrollTop = 0;
 }
 
 //la funcción para obtener la sala actual
@@ -154,6 +157,12 @@ function buscarOro() {
     mostrarHeroe(); //actualizamos la ficha del héroe
 }
 
+//la función para el botón de sonido
+document.getElementById("btn-sound").addEventListener("click", function () {
+    this.classList.toggle("active");
+});
+
+
 //la función para mostrar datos de héroe
 function mostrarHeroe() {
     let heroInfo = document.getElementById("hero-info");
@@ -162,7 +171,7 @@ function mostrarHeroe() {
     let template = document.getElementById("hero-template");
     let clone = template.content.cloneNode(true);
 
-    let player = defaultGameState.player;
+    let player = defaultGameState.player; //damos al jugador la información por defecto
 
     clone.querySelector(".hero-name").textContent = player.name; //su nombre
     clone.querySelector(".hero-health").textContent = player.health; //su vida
@@ -263,6 +272,7 @@ function mostrarEnemigo(enemy) {
 
 }
 
+//la funcion lanza una vez el sitio web esté cargado
 document.addEventListener("DOMContentLoaded", function() {
     mostrarHeroe(); //cargamos los datos iniciales del jugador
     mostrarSala(); //cargamos la sala inicial

@@ -212,8 +212,12 @@ main {
     max-width: 25px;
 }
 
-.icon-btn .hover {
+.icon-btn img {
     display: none;
+}
+
+.icon-btn .normal {
+    display: block;
 }
 
 .icon-btn:hover .normal {
@@ -221,5 +225,22 @@ main {
 }
 
 .icon-btn:hover .hover {
+    display: block;
+}
+
+.icon-btn.active .normal,
+.icon-btn.active .hover {
+    display: none;
+}
+
+.icon-btn.active .active {
+    display: block;
+}
+
+.icon-btn.active:hover .active {
+    display: none;
+}
+
+.icon-btn.active:hover .active-hover {
     display: block;
 }

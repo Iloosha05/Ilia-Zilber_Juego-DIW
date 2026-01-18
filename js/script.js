@@ -96,7 +96,7 @@ let defaultGameState = {
                 description: "Agresivo con chándal.",
                 health: 40,
                 strength: 8,
-                img: "gopnik.webp" 
+                img: "gopnik.png" 
             },
             { 
                 name: "Cliente enfadado",
@@ -104,7 +104,7 @@ let defaultGameState = {
                 description: "Grita mucho.",
                 health: 55,
                 strength: 10,
-                img: "cliente.webp" 
+                img: "cliente.png" 
             },
             { 
                 name: "Bandido",
@@ -112,7 +112,7 @@ let defaultGameState = {
                 description: "El jefe final.",
                 health: 120,
                 strength: 18,
-                img: "bandido.webp"
+                img: "bandido.png"
             }
         ]
     }

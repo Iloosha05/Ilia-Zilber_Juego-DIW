@@ -305,7 +305,7 @@ function combatLoop() {
 
     function turno() {
 
-        // Ataque monstruo
+        //La ataque de monstruo
         let damagMonster = enemy.strength + Math.floor(Math.random() * 10 + 1) - player.defense - player.bonusDefense;
         damagMonster = Math.max(0, damagMonster);
 
@@ -313,12 +313,12 @@ function combatLoop() {
         escribirTexto("El enemigo ataca y hace " + damagMonster + " daño");
 
         if (player.health <= 0) {
-            escribirTexto("HAS MUERTO");
+            escribirTexto("Has sido derrotado por el enemigo..."); //si el jugador muere, informamos
             resetPlayer();
             return;
         }
 
-        // ATAQUE HÉROE
+        //La ataque de heroe
         let damagHero = player.strength + player.bonusStrength + Math.floor(Math.random() * 10 + 1);
         damagHero = Math.max(0, damagHero);
 
@@ -347,6 +347,7 @@ function combatLoop() {
 function dropObjeto() {
     let player = defaultGameState.player;
 
+    //40% de probabilidad de encontrar un objeto
     if (Math.random() <= 0.4) {
         let esEspada = Math.random() < 0.5;
         let bonus = Math.floor(Math.random() * 10) + 1;
@@ -354,6 +355,7 @@ function dropObjeto() {
         if (esEspada) {
             escribirTexto("Has encontrado una espada +" + bonus);
 
+            //si el bonus del escudo es mejor que el actual, lo equipamos
             if (bonus > player.bonusStrength) {
                 player.bonusStrength = bonus;
                 escribirTexto("La equipas!");
@@ -362,7 +364,8 @@ function dropObjeto() {
             }
         } else {
             escribirTexto("Has encontrado un escudo +" + bonus);
-
+            
+            //si el bonus del escudo es mejor que el actual, lo equipamos
             if (bonus > player.bonusDefense) {
                 player.bonusDefense = bonus;
                 escribirTexto("Lo equipas!");
@@ -383,6 +386,7 @@ function comprarPocion() {
         return;
     }
 
+    //Restamos oro, sumamos pociones y mostramos el resultado
     if (player.gold >= 5) {
         player.gold -= 5;
         player.potions += 1;
@@ -398,6 +402,7 @@ function comprarPocion() {
 function usarPocion() {
     let player = defaultGameState.player;
 
+    //Restamos pociones, sumamos vida y mostramos el resultado
     if (player.potions > 0) {
         player.potions--;
         player.health += 10;

@@ -381,6 +381,7 @@ function comprarPocion() {
     let player = defaultGameState.player;
     let room = obtenerSalaActual();
 
+    //solo se puede comprar pociones en la tienda
     if (room.id !== 3) {
         escribirTexto("No estás en la tienda.");
         return;
@@ -395,6 +396,7 @@ function comprarPocion() {
         escribirTexto("No tienes suficiente oro.");
     }
 
+    //actualizamos la ficha del héroe
     mostrarHeroe();
 }
 
@@ -411,6 +413,7 @@ function usarPocion() {
         escribirTexto("No tienes pociones.");
     }
 
+    //actualizamos la ficha del héroe
     mostrarHeroe();
 }
 

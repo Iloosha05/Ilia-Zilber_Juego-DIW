@@ -2,13 +2,15 @@
 let defaultGameState = { 
     player: {
         name: "Ilia",
-        health: 120,
-        strength: 15,
+        health: 60,
+        strength: 5,
         defense: 10,
         currentRoom: 1,
         gold: 50,
         potions: 2,
-        currentEnemy: null 
+        currentEnemy: null,
+        bonusStrength: 0,
+        bonusDefense: 0
     },
 
     map: { 
@@ -183,6 +185,28 @@ function mostrarHeroe() {
     heroInfo.appendChild(clone);
 }
 
+//funci'on para recargar los datos de usuario
+function resetPlayer() {
+    let player = defaultGameState.player;
+
+    player.health = 120;
+    player.gold = 0;
+    player.potions = 0;
+    player.bonusStrength = 0;
+    player.bonusDefense = 0;
+    player.currentRoom = 1;
+
+    document.getElementById("enemy-info").innerHTML = "";
+    document.querySelector(".monster").style.display = "none";
+    defaultGameState.player.currentEnemy = null;
+
+    limpiarTexto();
+    escribirTexto("Has vuelto al inicio...");
+
+    mostrarHeroe();
+    mostrarSala();
+}
+
 //la función para actualizar y mostrar la sala actual
 function mostrarSala() {
     let room = obtenerSalaActual();
@@ -233,26 +257,26 @@ function intentarEnemigo() {
     let randomValue = Math.random(); //creamos un número aleatorio entre 0 y 1
     let enemies = defaultGameState.map.enemies;
 
-    if (randomValue < 0.02) { //comprobamos, si aparece el jefe
-        let boss = enemies.find(function(enemy) {
-            return enemy.isBoss === true; //buscamos el array de enemy, que tiene isBoss = trfue
-        });
+    if (randomValue < 0.02) {
+    let boss = enemies.find(function(enemy) {
+        return enemy.isBoss === true;
+    });
 
-        defaultGameState.player.currentEnemy = boss;
-        mostrarEnemigo(boss); //mostramos el jefe
-        return;
+    defaultGameState.player.currentEnemy = { ...boss };
+    mostrarEnemigo(boss);
+    } else if (randomValue < room.monsterProb) {
+    let normalEnemies = enemies.filter(function(enemy) {
+        return enemy.isBoss === false;
+    });
+
+    let randomEnemy = normalEnemies[Math.floor(Math.random() * normalEnemies.length)];
+
+    defaultGameState.player.currentEnemy = { ...randomEnemy };
+    mostrarEnemigo(randomEnemy);
     }
 
-    if (randomValue < room.monsterProb) { //si no es jefe, comprobamos enemigo normal
-
-        let normalEnemies = enemies.filter(function(enemy) {
-            return enemy.isBoss === false; //buscamos el array de enemy, que tiene isBoss = false
-        });
-
-        let randomEnemy = normalEnemies[Math.floor(Math.random() * normalEnemies.length)]; //buscamos un enemigo normal randomo
-
-        defaultGameState.player.currentEnemy = randomEnemy;
-        mostrarEnemigo(randomEnemy); //mostramos el enemigo habitual
+    if (defaultGameState.player.currentEnemy) {
+        combatLoop(); 
     }
 }
 
@@ -270,6 +294,119 @@ function mostrarEnemigo(enemy) {
         escribirTexto("Es el jefe final"); //si es un jefe, informamos
     }
 
+}
+
+// La funci'on para el combate
+function combatLoop() {
+    let player = defaultGameState.player;
+    let enemy = player.currentEnemy;
+
+    if (!enemy) return;
+
+    function turno() {
+
+        // Ataque monstruo
+        let damagMonster = enemy.strength + Math.floor(Math.random() * 10 + 1) - player.defense - player.bonusDefense;
+        damagMonster = Math.max(0, damagMonster);
+
+        player.health -= damagMonster;
+        escribirTexto("El enemigo ataca y hace " + damagMonster + " daño");
+
+        if (player.health <= 0) {
+            escribirTexto("HAS MUERTO");
+            resetPlayer();
+            return;
+        }
+
+        // ATAQUE HÉROE
+        let damagHero = player.strength + player.bonusStrength + Math.floor(Math.random() * 10 + 1);
+        damagHero = Math.max(0, damagHero);
+
+        enemy.health -= damagHero;
+        escribirTexto("Has atacado y has aplicado " + damagHero + " daño");
+
+        if (enemy.health <= 0) {
+            escribirTexto("Has derrotado al enemigo!");
+            dropObjeto();
+            player.currentEnemy = null;
+            mostrarHeroe();
+            document.getElementById("enemy-info").innerHTML = "";
+            document.querySelector(".monster").style.display = "none";
+            defaultGameState.player.currentEnemy = null;
+            return;
+        }
+
+        mostrarHeroe();
+        setTimeout(turno, 800);
+    }
+
+    setTimeout(turno, 800);
+}
+
+//funcion para el drop de objetos
+function dropObjeto() {
+    let player = defaultGameState.player;
+
+    if (Math.random() <= 0.4) {
+        let esEspada = Math.random() < 0.5;
+        let bonus = Math.floor(Math.random() * 10) + 1;
+
+        if (esEspada) {
+            escribirTexto("Has encontrado una espada +" + bonus);
+
+            if (bonus > player.bonusStrength) {
+                player.bonusStrength = bonus;
+                escribirTexto("La equipas!");
+            } else {
+                escribirTexto("Es peor que la actual.");
+            }
+        } else {
+            escribirTexto("Has encontrado un escudo +" + bonus);
+
+            if (bonus > player.bonusDefense) {
+                player.bonusDefense = bonus;
+                escribirTexto("Lo equipas!");
+            } else {
+                escribirTexto("Es peor que el actual.");
+            }
+        }
+    }
+}
+
+//funcion para comprar pociones
+function comprarPocion() {
+    let player = defaultGameState.player;
+    let room = obtenerSalaActual();
+
+    if (room.id !== 3) {
+        escribirTexto("No estás en la tienda.");
+        return;
+    }
+
+    if (player.gold >= 5) {
+        player.gold -= 5;
+        player.potions += 1;
+        escribirTexto("Has comprado una poción.");
+    } else {
+        escribirTexto("No tienes suficiente oro.");
+    }
+
+    mostrarHeroe();
+}
+
+//funcion para usar poci'on
+function usarPocion() {
+    let player = defaultGameState.player;
+
+    if (player.potions > 0) {
+        player.potions--;
+        player.health += 10;
+        escribirTexto("Has usado una poción (+10 vida)");
+    } else {
+        escribirTexto("No tienes pociones.");
+    }
+
+    mostrarHeroe();
 }
 
 //la funcion lanza una vez el sitio web esté cargado
@@ -297,5 +434,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("btn-oeste").addEventListener("click", function () {
         move("west");
+    });
+
+    document.getElementById("boton2").addEventListener("click", function () {
+        comprarPocion();
+    });
+
+    document.getElementById("boton3").addEventListener("click", function () {
+        usarPocion();
     });
 });

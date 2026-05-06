@@ -2,8 +2,8 @@
 let defaultGameState = { 
     player: {
         name: "Ilia",
-        health: 60,
-        strength: 5,
+        health: 120,
+        strength: 15,
         defense: 10,
         currentRoom: 1,
         gold: 50,
@@ -96,8 +96,9 @@ let defaultGameState = {
                 name: "Gopnik",
                 isBoss: false,
                 description: "Agresivo con chándal.",
-                health: 40,
+                health: 70,
                 strength: 8,
+                defense: 5,
                 img: "gopnik.png" 
             },
             { 
@@ -105,7 +106,8 @@ let defaultGameState = {
                 isBoss: false,
                 description: "Grita mucho.",
                 health: 55,
-                strength: 10,
+                strength: 14,
+                defense: 3,
                 img: "cliente.png" 
             },
             { 
@@ -113,7 +115,8 @@ let defaultGameState = {
                 isBoss: true,
                 description: "El jefe final.",
                 health: 120,
-                strength: 18,
+                strength: 50,
+                defense: 10,
                 img: "bandido.png"
             }
         ]
@@ -319,7 +322,7 @@ function combatLoop() {
         }
 
         //La ataque de heroe
-        let damagHero = player.strength + player.bonusStrength + Math.floor(Math.random() * 10 + 1);
+        let damagHero = player.strength + player.bonusStrength + Math.floor(Math.random() * 10 + 1) - enemy.defense;
         damagHero = Math.max(0, damagHero);
 
         enemy.health -= damagHero;
